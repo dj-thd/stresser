@@ -5,8 +5,9 @@ require dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARA
 
 $loop = React\EventLoop\Factory::create();
 
-$request_timeout = 5;
+$request_timeout = 30;
 $request_concurrency = 500;
+$request_per_socket = 200;
 
 $url = parse_url(isset($argv[1]) ? $argv[1] : '');
 
@@ -38,8 +39,10 @@ if(!isset($argv[2]) || !file_exists($argv[2])) {
 }
 
 $builder = new DjThd\RequestBuilder(file_get_contents($argv[2]), $ip, $url['host'] !== $ip);
-$sender = new DjThd\RequestSender($builder, $connector, $ip, $port, $tls, $request_concurrency);
+$sender = new DjThd\RequestSender($builder, $connector, $ip, $port, $tls, $request_concurrency, $request_per_socket);
 
-$sender->run();
+$loop->addPeriodicTimer(1, function() use ($sender) {
+	$sender->run();
+});
 
 $loop->run();
