@@ -1,0 +1,11 @@
+GET /?__STRING__=__STRING__ HTTP/1.1
+Host: www.example.com
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:__INT__.__INT__) Gecko/2010__INT__ Firefox/__INT__.0
+Content-Length: 0
+X-Forwarded-For: __IP__
+X-Real-IP: __IP__
+CF-Connecting-IP: __IP__
+True-Client-IP: __IP__
+Incap-Client-IP: __IP__
+

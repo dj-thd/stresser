@@ -1,0 +1,11 @@
+{
+    "require": {
+        "react/socket": "^0.8.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "DjThd\\": "src/DjThd/"
+        }
+    }
+
+}
