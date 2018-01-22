@@ -39,10 +39,7 @@ if(!isset($argv[2]) || !file_exists($argv[2])) {
 }
 
 $builder = new DjThd\RequestBuilder(file_get_contents($argv[2]), $ip, $url['host'] !== $ip);
-$sender = new DjThd\RequestSender($builder, $connector, $ip, $port, $tls, $request_concurrency, $request_per_socket);
-
-$loop->addPeriodicTimer(1, function() use ($sender) {
-	$sender->run();
-});
+$sender = new DjThd\RequestSender($loop, $builder, $connector, $ip, $port, $tls, $request_concurrency, $request_per_socket);
+$sender->run();
 
 $loop->run();
