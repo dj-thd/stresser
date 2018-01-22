@@ -29,6 +29,7 @@ class RequestSender
 	public function run()
 	{
 		$this->concurrencyLimiter->run(function($data, $endCallback) {
+			echo '.';
 			$this->connector->connect(($this->tls ? 'tls' : 'tcp') . '://' . $this->ip . ':' . $this->port)->then(function($connection) use ($endCallback) {
 				$connection->on('end', function() use ($connection) {
 					echo 'n';
@@ -41,7 +42,7 @@ class RequestSender
 				$connection->on('close', $endCallback);
 				$this->writeChunk($connection, $this->reqPerSocket);
 				$this->concurrencyLimiter->enqueueItem(1);
-				echo '.';
+				echo ',';
 			})->otherwise($endCallback);
 		});
 		for($i = 0; $i <= $this->maxConcurrency; $i++) {
