@@ -43,7 +43,10 @@ class RequestSender
 				$this->writeChunk($connection, $this->reqPerSocket);
 				$this->concurrencyLimiter->enqueueItem(1);
 				echo ',';
-			})->otherwise($endCallback);
+			})->otherwise(function() use ($endCallback) {
+				$this->concurrencyLimiter->enqueueItem(1);
+				call_user_func($endCallback);
+			});
 		});
 		for($i = 0; $i <= $this->maxConcurrency; $i++) {
 			$this->concurrencyLimiter->handleData($i);
